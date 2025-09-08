@@ -24,10 +24,14 @@ def build_embed(state):
     embed = discord.Embed(
         title="🔠 Hangman",
         description=f"```{HANGMAN_PICS[stage]}```",
-        color=0xffc300 if stage < len(HANGMAN_PICS) - 1 else 0xff0000
+        color=0xFFC300 if stage < len(HANGMAN_PICS) - 1 else 0xFF0000,
     )
-    embed.add_field(name="Word", value=f"```{" ".join(state["display"])}```", inline=False)
-    embed.add_field(name="Wrong guesses", value=", ".join(state["wrong"]) or "None", inline=False)
+    embed.add_field(
+        name="Word", value=f"```{" ".join(state["display"])}```", inline=False
+    )
+    embed.add_field(
+        name="Wrong guesses", value=", ".join(state["wrong"]) or "None", inline=False
+    )
     return embed
 
 
@@ -94,16 +98,23 @@ async def hangman(ctx, letter=None):
     stage = len(state["wrong"])
 
     if "_" not in state["display"]:
-        embed.add_field(name="🏆 Solved by", value=ctx.author.display_name, inline=False)
+        embed.add_field(
+            name="🏆 Solved by", value=ctx.author.display_name, inline=False
+        )
         await state["message"].edit(embed=embed)
-        await ctx.send(f"🎉 You guessed it! The word was **{state['word']}**. Solved by {ctx.author.mention}", delete_after=5)
+        await ctx.send(
+            f"🎉 You guessed it! The word was **{state['word']}**. Solved by {ctx.author.mention}",
+            delete_after=5,
+        )
         del hangman_games[ctx.channel.id]
     elif stage >= len(HANGMAN_PICS) - 1:
         for i, ch in enumerate(state["word"]):
             state["display"][i] = ch
         embed.add_field(name="💀 Hanged", value=ctx.author.display_name, inline=False)
         await state["message"].edit(embed=embed)
-        await ctx.send(f"💀 You lost! The word was **{state['word']}**.", delete_after=5)
+        await ctx.send(
+            f"💀 You lost! The word was **{state['word']}**.", delete_after=5
+        )
         del hangman_games[ctx.channel.id]
 
 

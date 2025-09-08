@@ -2,11 +2,7 @@ import random
 from discord.ext import commands
 
 
-RULES = {
-        "rock": "scissors",
-        "scissors": "paper",
-        "paper": "rock"
-}
+RULES = {"rock": "scissors", "scissors": "paper", "paper": "rock"}
 
 
 class RockPaperScissors(commands.Converter):
@@ -17,5 +13,7 @@ class RockPaperScissors(commands.Converter):
         if argument.lower() == RULES[choice]:
             return f"I win because **{choice}** beats **{argument.lower()}**"
         if choice == RULES[argument.lower()]:
-            return f"{ctx.author} wins because **{argument.lower()}** beats **{choice}**"
+            return (
+                f"{ctx.author} wins because **{argument.lower()}** beats **{choice}**"
+            )
         return "It's a draw"

@@ -24,7 +24,6 @@ async def on_ready():
 
 @client.command()
 async def ping(ctx):
-    print(f"user: {ctx.author}, has used ping command")
     await ctx.send("Pong")
 
 

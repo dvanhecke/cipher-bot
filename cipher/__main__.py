@@ -5,6 +5,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from cipher.rockpaperscissors import RockPaperScissors
+from cipher.guessnumber import GuessNumber
 
 load_dotenv()
 
@@ -29,6 +30,11 @@ async def ping(ctx):
 
 @client.command()
 async def rps(ctx, *, win: RockPaperScissors()):
+    await ctx.send(win)
+
+
+@client.command()
+async def guess(ctx, *, win: GuessNumber()):
     await ctx.send(win)
 
 

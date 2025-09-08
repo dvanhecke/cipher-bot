@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 from cipher.rockpaperscissors import RockPaperScissors
 from cipher.guessnumber import GuessNumber
-from cipher.hangman import *
+from cipher.hangman import hangman_games, HANGMAN_PICS, HANGMAN_WORDS
 
 load_dotenv()
 

@@ -5,8 +5,16 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from cipher.rockpaperscissors import RockPaperScissors
-from cipher.guessnumber import GuessNumber
-from cipher.hangman import start_hangman_game, get_hangman_state, handle_hangman_guess
+from cipher.guessnumber import (
+    start_guessing_game,
+    get_guessing_state,
+    handle_guessing_guess,
+)
+from cipher.hangman import (
+    start_hangman_game,
+    get_hangman_state,
+    handle_hangman_guess,
+)
 
 load_dotenv()
 
@@ -34,8 +42,19 @@ async def rps(ctx, *, win: RockPaperScissors()):
 
 
 @client.command()
-async def guess(ctx, *, win: GuessNumber()):
-    await ctx.send(win)
+async def guess(ctx, number=None):
+    await ctx.message.delete()
+
+    if number is None:
+        await start_guessing_game(ctx)
+        return
+
+    state = get_guessing_state(ctx)
+    if not state:
+        await ctx.send("No active game here! Start with `!guess`.", delete_after=5)
+        return
+
+    await handle_guessing_guess(ctx, state, number)
 
 
 @client.command()

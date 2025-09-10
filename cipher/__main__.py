@@ -43,7 +43,7 @@ async def hybrid_help(ctx):
         embed.add_field(
             name=f"!{command.name} /{command.name}",
             value=command.description or "No description provided.",
-            inline=False
+            inline=False,
         )
     if not ctx.interaction:
         await ctx.message.delete()
@@ -56,7 +56,7 @@ async def hybrid_help(ctx):
 @commands.is_owner()
 async def ping(ctx):
     await ctx.message.delete()
-    await ctx.send("Pong", delete_after=1)
+    await ctx.send(f"Pong! Latency: {round(ctx.bot.latency * 1000)}ms", delete_after=5)
 
 
 @client.hybrid_command(

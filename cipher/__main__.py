@@ -92,8 +92,6 @@ async def guess(ctx, number=None):
 async def hangman(ctx, letter=None):
     if not ctx.interaction:
         await ctx.message.delete()
-    else:
-        await ctx.send("updated the embed", delete_after=5)
 
     if letter is None:
         await start_hangman_game(ctx)

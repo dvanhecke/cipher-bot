@@ -23,7 +23,7 @@ TOKEN = os.getenv("BOT_TOKEN")
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-client = commands.Bot(command_prefix="!", intents=intents)
+client = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 tree = client.tree
 
 
@@ -32,6 +32,25 @@ async def on_ready():
     synced = await tree.sync()
     print(f"Synced {len(synced)} commands globally")
     print(f"{client.user} has connected to Discord!")
+
+
+@client.hybrid_command(name="help", description="Show the help menu")
+async def hybrid_help(ctx):
+    embed = discord.Embed(title="📖 Help Menu", color=discord.Color.gold())
+    for command in client.commands:
+        if command.hidden:
+            continue
+        embed.add_field(
+            name=f"!{command.name} /{command.name}",
+            value=command.help or "No description provided.",
+            inline=False
+        )
+    if not ctx.interaction:
+        await ctx.message.delete()
+        await ctx.send(embed=embed, delete_after=10)
+    else:
+        await ctx.interaction.response.send_message(embed=embed, ephemeral=True)
+
 
 
 @client.hybrid_command(name="ping", description="test bot responsivity")

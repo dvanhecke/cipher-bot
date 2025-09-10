@@ -14,6 +14,6 @@ class RockPaperScissors(commands.Converter):
             return f"I win because **{choice}** beats **{argument.lower()}**"
         if choice == RULES[argument.lower()]:
             return (
-                f"{ctx.author} wins because **{argument.lower()}** beats **{choice}**"
+                f"{ctx.author.display_name} wins because **{argument.lower()}** beats **{choice}**"
             )
         return "It's a draw"

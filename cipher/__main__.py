@@ -24,24 +24,27 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 client = commands.Bot(command_prefix="!", intents=intents)
+tree = client.tree
 
 
 @client.event
 async def on_ready():
+    synced = await tree.sync()
+    print(f"Synced {len(synced)} commands globally")
     print(f"{client.user} has connected to Discord!")
 
 
-@client.command()
+@client.hybrid_command(name="ping", description="test bot responsivity")
 async def ping(ctx):
     await ctx.send("Pong")
 
 
-@client.command()
-async def rps(ctx, *, win: RockPaperScissors()):
-    await ctx.send(win)
+@client.hybrid_command(name="rps", description="Play rock paper scissors against the bot")
+async def rps(ctx, *, choice: RockPaperScissors()):
+    await ctx.send(choice)
 
 
-@client.command()
+@client.hybrid_command(name="guess", description="to start don't add a number otherwise guess the number between 0 and 100")
 async def guess(ctx, number=None):
     await ctx.message.delete()
 
@@ -57,7 +60,7 @@ async def guess(ctx, number=None):
     await handle_guessing_guess(ctx, state, number)
 
 
-@client.command()
+@client.hybrid_command(name="hangman", description="Let's play hangman to start don't add a letter otherwise guess the word")
 async def hangman(ctx, letter=None):
     await ctx.message.delete()
 

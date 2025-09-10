@@ -39,15 +39,20 @@ async def ping(ctx):
     await ctx.send("Pong")
 
 
-@client.hybrid_command(name="rps", description="Play rock paper scissors against the bot")
+@client.hybrid_command(
+    name="rps", description="Play rock paper scissors against the bot"
+)
 async def rps(ctx, *, choice: RockPaperScissors()):
     await ctx.send(choice)
 
 
-@client.hybrid_command(name="guess", description="to start don't add a number otherwise guess the number between 0 and 100")
+@client.hybrid_command(
+    name="guess",
+    description="to start don't add a number otherwise guess the number between 0 and 100",
+)
 async def guess(ctx, number=None):
-    await ctx.message.delete()
-
+    if not ctx.interaction:
+        await ctx.message.delete()
     if number is None:
         await start_guessing_game(ctx)
         return
@@ -57,12 +62,19 @@ async def guess(ctx, number=None):
         await ctx.send("No active game here! Start with `!guess`.", delete_after=5)
         return
 
+    await ctx.send("Parsing the guess", delete_after=1)
     await handle_guessing_guess(ctx, state, number)
 
 
-@client.hybrid_command(name="hangman", description="Let's play hangman to start don't add a letter otherwise guess the word")
+@client.hybrid_command(
+    name="hangman",
+    description="Let's play hangman to start don't add a letter otherwise guess the word",
+)
 async def hangman(ctx, letter=None):
-    await ctx.message.delete()
+    if not ctx.interaction:
+        await ctx.message.delete()
+    else:
+        await ctx.send("updated the embed", delete_after=5)
 
     if letter is None:
         await start_hangman_game(ctx)
@@ -73,6 +85,7 @@ async def hangman(ctx, letter=None):
         await ctx.send("No active game here! Start with `!hangman`.", delete_after=5)
         return
 
+    await ctx.send("Parsing the guess", delete_after=1)
     await handle_hangman_guess(ctx, state, letter)
 
 

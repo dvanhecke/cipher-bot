@@ -52,10 +52,11 @@ async def hybrid_help(ctx):
         await ctx.interaction.response.send_message(embed=embed, ephemeral=True)
 
 
-
-@client.hybrid_command(name="ping", description="test bot responsivity")
+@client.command(hidden=True)
+@commands.is_owner()
 async def ping(ctx):
-    await ctx.send("Pong")
+    await ctx.message.delete()
+    await ctx.send("Pong", delete_after=1)
 
 
 @client.hybrid_command(

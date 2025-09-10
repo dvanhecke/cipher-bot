@@ -42,7 +42,7 @@ async def hybrid_help(ctx):
             continue
         embed.add_field(
             name=f"!{command.name} /{command.name}",
-            value=command.help or "No description provided.",
+            value=command.description or "No description provided.",
             inline=False
         )
     if not ctx.interaction:

@@ -1,29 +1,39 @@
+# Cipher-Bot
+# Copyright (c) 2025 dvanhecke
+# Licensed under the MIT License
+
+"""
+Module: cipher
+Main entry point for the Cipher-Bot minigames Discord bot.
+
+Responsibilities:
+- Initialize the Discord bot instance
+- Load all minigame cogs/extensions
+- Handle bot events and commands
+- Start the bot event loop
+"""
+
 import os
+import asyncio
 
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
 
-from cipher.rockpaperscissors import RockPaperScissors
-from cipher.guessnumber import (
-    start_guessing_game,
-    get_guessing_state,
-    handle_guessing_guess,
-)
-from cipher.hangman import (
-    start_hangman_game,
-    get_hangman_state,
-    handle_hangman_guess,
-)
-
-load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
+COMMAND_PREFIX = os.getenv("COMMAND_PREFIX")
+
+COGS = [
+    "cipher.cogs.hangman",
+    "cipher.cogs.number_guessing",
+    "cipher.cogs.rockpaperscissors",
+]
+
 
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-client = commands.Bot(command_prefix="!", intents=intents, help_command=None)
+client = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents, help_command=None)
 tree = client.tree
 
 
@@ -41,7 +51,7 @@ async def hybrid_help(ctx):
         if command.hidden:
             continue
         embed.add_field(
-            name=f"!{command.name} /{command.name}",
+            name=f"{COMMAND_PREFIX}{command.name} /{command.name}",
             value=command.description or "No description provided.",
             inline=False,
         )
@@ -59,53 +69,23 @@ async def ping(ctx):
     await ctx.send(f"Pong! Latency: {round(ctx.bot.latency * 1000)}ms", delete_after=5)
 
 
-@client.hybrid_command(
-    name="rps", description="Play rock paper scissors against the bot"
-)
-async def rps(ctx, *, choice: RockPaperScissors()):
-    await ctx.send(choice)
-
-
-@client.hybrid_command(
-    name="guess",
-    description="to start don't add a number otherwise guess the number between 0 and 100",
-)
-async def guess(ctx, number=None):
-    if not ctx.interaction:
-        await ctx.message.delete()
-    if number is None:
-        await start_guessing_game(ctx)
-        return
-
-    state = get_guessing_state(ctx)
-    if not state:
-        await ctx.send("No active game here! Start with `!guess`.", delete_after=5)
-        return
-
-    await ctx.send("Parsing the guess", delete_after=1)
-    await handle_guessing_guess(ctx, state, number)
-
-
-@client.hybrid_command(
-    name="hangman",
-    description="Let's play hangman to start don't add a letter otherwise guess the word",
-)
-async def hangman(ctx, letter=None):
-    if not ctx.interaction:
-        await ctx.message.delete()
-
-    if letter is None:
-        await start_hangman_game(ctx)
-        return
-
-    state = get_hangman_state(ctx)
-    if not state:
-        await ctx.send("No active game here! Start with `!hangman`.", delete_after=5)
-        return
-
-    await ctx.send("Parsing the guess", delete_after=1)
-    await handle_hangman_guess(ctx, state, letter)
+async def load_cogs(bot):
+    """Load all cogs asynchronously."""
+    for cog in COGS:
+        await bot.load_extension(cog)
+        print(f"Loaded {cog}")
 
 
 if __name__ == "__main__":
-    client.run(TOKEN)
+
+    async def main():
+        """main function to start the bot"""
+        await load_cogs(client)
+        try:
+            await asyncio.shield(client.start(TOKEN))
+        except KeyboardInterrupt:
+            print("KeyboardInterrupt received. Shutting down...")
+        finally:
+            await client.close()
+
+    asyncio.run(main())

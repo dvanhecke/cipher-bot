@@ -20,5 +20,5 @@ jobs:
         pipenv install --dev
     - name: Testing the code
       run: |
-        PYTHONPATH=. pipenv run pytest --cov
+        PYTHONPATH=. pipenv run pytest --cov --cov-branch --cov-report=xml
 

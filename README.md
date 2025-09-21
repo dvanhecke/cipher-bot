@@ -3,6 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Sponsor](https://img.shields.io/badge/☕-Buy%20Me%20a%20Coffee-orange)](https://buymeacoffee.com/dvanhecke)
+[![Known Vulnerabilities](https://snyk.io/test/github/dvanhecke/cipher-bot/badge.svg)](https://snyk.io/test/github/dvanhecke/cipher-bot)
 
 ---
 

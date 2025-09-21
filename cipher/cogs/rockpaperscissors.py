@@ -10,7 +10,7 @@ Handles processing games through Discord commands.
 from discord.ext import commands
 import discord
 from cipher.logic.rockpaperscissors import play_game
-from cipher.utils import build_embed
+from cipher.utils.functions import build_embed
 
 
 class RockPaperScissors(commands.Cog):

@@ -45,8 +45,10 @@ flowchart TD
 
 ## Installation
 
+### Option 1 - Manual Setup
+
 ```bash
-git clone https://github.com/dvanhecke/cipher.git
+git clone https://github.com/dvanhecke/cipher-bot.git
 cd cipher
 pipenv install
 ```
@@ -65,6 +67,11 @@ pipenv run python -m cipher
 ```
 
 > Recommended: Run inside a `tmux` session for headless monitoring.
+
+### Option 2 — Add via Discord
+
+You can also directly invite Cipher to your Discord server using the install link:
+[Install Cipher on Discord](https://discord.com/oauth2/authorize?client_id=1415451280783966220)
 
 ---
 

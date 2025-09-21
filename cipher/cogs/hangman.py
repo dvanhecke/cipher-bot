@@ -8,7 +8,7 @@ Handles starting games and processing guesses through Discord commands.
 """
 
 from discord.ext import commands
-from cipher.utils.hangman import (
+from cipher.logic.hangman import (
     start_game,
     get_state,
     handle_guess,

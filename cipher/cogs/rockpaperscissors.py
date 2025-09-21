@@ -8,7 +8,9 @@ Handles processing games through Discord commands.
 """
 
 from discord.ext import commands
-from cipher.utils.rockpaperscissors import build_embed, play_game
+import discord
+from cipher.logic.rockpaperscissors import play_game
+from cipher.utils import build_embed
 
 
 class RockPaperScissors(commands.Cog):
@@ -44,7 +46,7 @@ class RockPaperScissors(commands.Cog):
         except ValueError as e:
             await ctx.send(e, delete_after=10)
             return
-        embed = build_embed(result["bot"], result["user"], result["result"])
+        embed = build_embed("🪨📄✂️ Rock-Paper-Scissors", discord.Color.blue(), result)
         await ctx.send(embed=embed)
 
 

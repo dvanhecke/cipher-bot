@@ -39,6 +39,10 @@ tree = client.tree
 
 @client.event
 async def on_ready():
+    """
+    Function to run when getting the bot ready
+    - syncs the application command tree
+    """
     synced = await tree.sync()
     print(f"Synced {len(synced)} commands globally")
     print(f"{client.user} has connected to Discord!")
@@ -46,6 +50,9 @@ async def on_ready():
 
 @client.hybrid_command(name="help", description="Show the help menu")
 async def hybrid_help(ctx):
+    """
+    help command for the bot
+    """
     embed = discord.Embed(title="📖 Help Menu", color=discord.Color.gold())
     for command in client.commands:
         if command.hidden:
@@ -65,6 +72,9 @@ async def hybrid_help(ctx):
 @client.command(hidden=True)
 @commands.is_owner()
 async def ping(ctx):
+    """
+    bot owner only command to test latency of the bot
+    """
     await ctx.message.delete()
     await ctx.send(f"Pong! Latency: {round(ctx.bot.latency * 1000)}ms", delete_after=5)
 

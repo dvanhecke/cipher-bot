@@ -38,9 +38,8 @@ class MiniGame(ABC):
         self._attempts: int = 0
         self._active: bool = True
         self._guess_history: List[Any] = []
-        self._embed_message_data: Mapping[str, tuple[str, bool]] = (
-            self._build_embed_data()
-        )
+        self._embed_message_data: Mapping[str, tuple[str, bool]] = None
+        self._build_embed_data
 
     @property
     def is_active(self) -> bool:
@@ -60,19 +59,17 @@ class MiniGame(ABC):
         return self._embed_message_data
 
     @abstractmethod
-    def _build_embed_data(self) -> Mapping[str, tuple[str, bool]]:
+    def _build_embed_data(self):
         """
         Protected method to generate the embed fields for this game.
 
         Subclasses MUST override this method.
 
-        Returns:
-            Mapping[str, Tuple[str, bool]]: Field name -> (value, inline flag)
         """
-        return {}
+        self._embed_message_data: Mapping[str, tuple[str, bool]] = {}
 
     @abstractmethod
-    def play(self, *args, **kwargs) -> Any:
+    def play(self, *args, **kwargs) -> None:
         """
         Abstract method representing the main gameplay loop or action.
         Subclasses MUST override this method.

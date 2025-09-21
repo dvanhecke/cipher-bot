@@ -9,7 +9,7 @@ Handles processing games through Discord commands.
 
 from discord.ext import commands
 import discord
-from cipher.logic.rockpaperscissors import play_game
+from cipher.logic.rockpaperscissors import RockPaperScissorsGame
 from cipher.utils.functions import build_embed
 
 
@@ -42,11 +42,15 @@ class RockPaperScissors(commands.Cog):
             await ctx.message.delete()
 
         try:
-            result = play_game(choice)
+            game: RockPaperScissorsGame = RockPaperScissorsGame(choice)
         except ValueError as e:
             await ctx.send(e, delete_after=10)
             return
-        embed = build_embed("🪨📄✂️ Rock-Paper-Scissors", discord.Color.blue(), result)
+
+        game.play()
+        embed = build_embed(
+            "🪨📄✂️ Rock-Paper-Scissors", discord.Color.blue(), game.embed_message_data
+        )
         await ctx.send(embed=embed)
 
 

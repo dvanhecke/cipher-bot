@@ -8,11 +8,34 @@ Contains game state management, random number selection, and Discord embed updat
 """
 
 import random
+import os
 from cipher.utils.minigame import MiniGame
+
+MAX_NUMBER = os.getenv("GUESSING_GAME_MAX_NUMBER", 100)
 
 
 class NumberGuessing(MiniGame):
-    def __init__(self, max_number: int = 100, max_attempts: int | None = None):
+    """
+    Numbers guessing Minigame
+
+    This class implements the logic for a number guessing
+    game against the bot. It extends the MiniGame base class.
+
+    Features:
+    - Accepts a player's guess.
+    - Randomly selects the bot's choice.
+    - Determines the result: win, higher, or lower.
+    - Prepares embed-friendly data for Discord display.
+    """
+
+    def __init__(self, max_number: int = MAX_NUMBER, max_attempts: int | None = None):
+        """
+        Initialize a new numbers guessing game.
+
+        Args:
+            max_number (int): upperbound of the random number defaults to env var
+            max_attempts (int | None): maximum attempts to guess the target number defaults to None
+        """
         super().__init__(max_attempts=max_attempts)
         self._number = random.randint(0, max_number)
         self._max_number = max_number
@@ -28,7 +51,8 @@ class NumberGuessing(MiniGame):
         """Returns the result of the guess"""
         return self._result
 
-    def play(self, guess: int) -> str:
+    def play(self, *args, **kwargs) -> None:
+        guess = args[0]
         self._guess_history.append(guess)
         self._attempts += 1
 

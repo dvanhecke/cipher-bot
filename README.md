@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Sponsor](https://img.shields.io/badge/☕-Buy%20Me%20a%20Coffee-orange)](https://buymeacoffee.com/dvanhecke)
 [![Known Vulnerabilities](https://snyk.io/test/github/dvanhecke/cipher-bot/badge.svg)](https://snyk.io/test/github/dvanhecke/cipher-bot)
-![codecoverage](https://codecov.io/gh/dvanhecke/cipher-bot/graph/badge.svg?token=0OFSSUSN6S)
+[![codecov](https://codecov.io/gh/dvanhecke/cipher-bot/graph/badge.svg?token=0OFSSUSN6S)](https://codecov.io/gh/dvanhecke/cipher-bot)
 
 ---
 

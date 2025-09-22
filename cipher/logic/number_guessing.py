@@ -9,167 +9,47 @@ Contains game state management, random number selection, and Discord embed updat
 
 import random
 import os
-
-import discord
-
-
-guessing_games = {}
+from cipher.utils.minigame import MiniGame
 
 MAX = int(os.getenv("GUESSING_GAME_MAX_NUMBER"))
 
-# -------------------------
-# Embed builder
-# -------------------------
 
+class NumberGuessing(MiniGame):
+    def __init__(self, max_number: int = 100, max_attempts: int | None = None):
+        super().__init__(max_attempts=max_attempts)
+        self._number = random.randint(0, max_number)
+        self._max_number = max_number
+        self._result: str = ""
 
-def build_embed(state):
-    """
-    Build a Discord Embed representing current guessing state.
+    @property
+    def number(self) -> int:
+        """Returns the target number"""
+        return self._number
 
-    Args:
-        state (dict): The game state containing 'current' and 'target'.
+    @property
+    def result(self) -> int:
+        """Returns the result of the guess"""
+        return self._result
 
-    Returns:
-        discord.Embed: Embed ready to send or edit.
-    """
-    embed = discord.Embed(
-        title="🎲 Guess the number",
-        description="Guess the number I'm thinking",
-        color=0xFF0000 if not state["solved"] else 0x00FF00,
-    )
+    def play(self, guess: int) -> str:
+        self._guess_history.append(guess)
+        self._attempts += 1
 
-    # Add display progress
-    embed.add_field(name="Current guess", value=f"{state['current']}")
-    embed.add_field(
-        name="Hint",
-        value=(
-            f"🧠 guess the number between 0 and {MAX}"
-            if state["current"] is None
-            else (
-                "🎉"
-                if state["solved"]
-                else "⬆️" if state["target"] > state["current"] else "⬇️"
-            )
-        ),
-    )
-    embed.add_field(name="Last guess by", value=f"{state["author"]}")
-    embed.add_field(name="Guesses", value=f"{state["guesses"]}")
+        if guess < self._number:
+            self._result = "higher"
+        elif guess > self._number:
+            self._result = "lower"
+        else:
+            self._result = "correct"
+            self._active = False
 
-    return embed
+        if self._max_attempts and self._attempts >= self._max_attempts:
+            self._active = False
 
+        self._build_embed_data()
 
-# -------------------------
-# Game management
-# -------------------------
-
-
-async def start_game(ctx):
-    """
-    Start a new guessing game in a Discord channel.
-
-    Args:
-        ctx: discord.py Context
-    """
-    if ctx.channel.id in guessing_games:
-        await ctx.send("Game already running!", delete_after=5)
-        return
-
-    target = random.randint(0, MAX)
-    state = {
-        "target": target,
-        "solved": False,
-        "current": None,
-        "author": ctx.author.display_name,
-        "guesses": 0,
-    }
-
-    embed = build_embed(state)
-    msg = await ctx.send(embed=embed)
-    state["message"] = msg
-    guessing_games[ctx.channel.id] = state
-    return
-
-
-def get_state(ctx):
-    """
-    Retrieve current hangman game state for a channel.
-
-    Args:
-        ctx: discord.py Context
-
-    Returns:
-        dict | None: Game state or None if no game.
-    """
-    return guessing_games.get(ctx.channel.id)
-
-
-async def handle_guess(ctx, state, number):
-    """
-    Handle a player's number guess.
-
-    Args:
-        ctx: discord.py Context
-        state (dict): Current game state
-        number (int): number guessed
-    """
-    try:
-        guess = int(number)
-        if not 0 <= guess <= MAX:
-            await ctx.send(
-                f"Please guess a number between *0* and *{MAX}*, (otherwise I get headaches :<)",
-                delete_after=5,
-            )
-            return
-    except ValueError:
-        await ctx.send(
-            f"Please guess a number between *0* and *{MAX}*, (otherwise I get headaches :<)",
-            delete_after=5,
-        )
-        return
-    process_guess(state, guess)
-    state["author"] = ctx.author.display_name
-
-    if state["solved"]:
-        await handle_win(ctx, state)
-        return
-    embed = build_embed(state)
-    await state["message"].edit(embed=embed)
-    return
-
-
-def process_guess(state, number):
-    """
-    Update game state based on a guessed number.
-
-    Args:
-        state (dict): Game state
-        number (int): Player guess
-    """
-    state["guesses"] += 1
-    state["current"] = number
-    if number == state["target"]:
-        state["solved"] = True
-        return
-    return
-
-
-# -------------------------
-# Win/Loss handlers
-# -------------------------
-
-
-async def handle_win(ctx, state):
-    """
-    Handle a correct guess.
-
-    Args:
-        ctx: discord.py Context
-        state (dict): Current game state
-    """
-    embed = build_embed(state)
-    await state["message"].edit(embed=embed)
-    await ctx.send(
-        f"🎉 You guessed it! The number was **{state['target']}**. Solved by {ctx.author.mention}",
-        delete_after=5,
-    )
-    del guessing_games[ctx.channel.id]
+    def _build_embed_data(self):
+        self._embed_message_data = {
+            "Attempts": (str(self._attempts), True),
+            "History": (", ".join(map(str, self._guess_history)), False),
+        }

@@ -4,7 +4,7 @@ from cipher.logic.number_guessing import NumberGuessing
 
 def test_guess_correct(monkeypatch):
     """Test guessing the correct number."""
-    game = NumberGuessing(max_number=10)
+    game = NumberGuessing()
     # Force the number to 5
     monkeypatch.setattr(game, "_number", 5)
 
@@ -17,7 +17,7 @@ def test_guess_correct(monkeypatch):
 
 def test_guess_too_low(monkeypatch):
     """Test guessing lower than the target number."""
-    game = NumberGuessing(max_number=10)
+    game = NumberGuessing()
     monkeypatch.setattr(game, "_number", 7)
 
     game.play(5)
@@ -29,7 +29,7 @@ def test_guess_too_low(monkeypatch):
 
 def test_guess_too_high(monkeypatch):
     """Test guessing higher than the target number."""
-    game = NumberGuessing(max_number=10)
+    game = NumberGuessing()
     monkeypatch.setattr(game, "_number", 3)
 
     game.play(5)
@@ -41,7 +41,7 @@ def test_guess_too_high(monkeypatch):
 
 def test_max_attempts(monkeypatch):
     """Test that max_attempts disables the game."""
-    game = NumberGuessing(max_number=10, max_attempts=2)
+    game = NumberGuessing(max_attempts=2)
     monkeypatch.setattr(game, "_number", 8)
 
     assert game.is_active
@@ -53,7 +53,7 @@ def test_max_attempts(monkeypatch):
 
 def test_embed_data(monkeypatch):
     """Test that _build_embed_data returns correct structure."""
-    game = NumberGuessing(max_number=10)
+    game = NumberGuessing()
     monkeypatch.setattr(game, "_number", 5)
 
     game.play(3)

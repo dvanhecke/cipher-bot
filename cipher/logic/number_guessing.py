@@ -28,7 +28,7 @@ class NumberGuessing(MiniGame):
     - Prepares embed-friendly data for Discord display.
     """
 
-    def __init__(self, max_number: int = MAX_NUMBER, max_attempts: int | None = None):
+    def __init__(self, max_attempts: int | None = None):
         """
         Initialize a new numbers guessing game.
 
@@ -37,8 +37,8 @@ class NumberGuessing(MiniGame):
             max_attempts (int | None): maximum attempts to guess the target number defaults to None
         """
         super().__init__(max_attempts=max_attempts)
-        self._number = random.randint(0, max_number)
-        self._max_number = max_number
+        self._number = random.randint(0, MAX_NUMBER)
+        self._max_number = MAX_NUMBER
         self._result: str = ""
 
     @property

@@ -11,7 +11,7 @@ import random
 import os
 from cipher.utils.minigame import MiniGame
 
-MAX_NUMBER = os.getenv("GUESSING_GAME_MAX_NUMBER", 100)
+MAX_NUMBER = int(os.getenv("GUESSING_GAME_MAX_NUMBER", "100"))
 
 
 class NumberGuessing(MiniGame):

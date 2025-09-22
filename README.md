@@ -1,16 +1,17 @@
 # Cipher 🤖 — Modular Discord Minigames Bot
 
-[![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Sponsor](https://img.shields.io/badge/☕-Buy%20Me%20a%20Coffee-orange)](https://buymeacoffee.com/dvanhecke)
 [![Known Vulnerabilities](https://snyk.io/test/github/dvanhecke/cipher-bot/badge.svg)](https://snyk.io/test/github/dvanhecke/cipher-bot)
+[![codecoverage](https://codecov.io/gh/dvanhecke/cipher-bot/graph/badge.svg?token=0OFSSUSN6S)
 
 ---
 
 ## Overview
 
 Cipher is a **modular, asynchronous Discord bot** focused on **fun minigames**, fully designed to be **plug-and-play**.  
-It runs smoothly on lightweight setups like a **Raspberry Pi 3 B (headless)** and is written in **Python 3.11** using **discord.py**.
+It runs smoothly on lightweight setups like a **Raspberry Pi 3 B (headless)** and is written in **Python 3.13** using **discord.py**.
 
 All cogs are independent, and game logic is fully separated from Discord interactions, making the bot **testable, maintainable, and extendable**.
 

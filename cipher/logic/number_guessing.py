@@ -8,10 +8,7 @@ Contains game state management, random number selection, and Discord embed updat
 """
 
 import random
-import os
 from cipher.utils.minigame import MiniGame
-
-MAX = int(os.getenv("GUESSING_GAME_MAX_NUMBER"))
 
 
 class NumberGuessing(MiniGame):

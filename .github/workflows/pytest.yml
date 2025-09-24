@@ -20,7 +20,12 @@ jobs:
         pipenv install --dev
     - name: Testing the code
       run: |
-        PYTHONPATH=. pipenv run pytest --cov=cipher --cov-report=term-missing --cov-branch --junitxml=junit.xml
+        PYTHONPATH=. pipenv run pytest \
+          --cov=cipher \
+          --cov-branch \
+          --cov-report=term-missing \
+          --cov-report=xml \
+          --junitxml=junit.xml
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5

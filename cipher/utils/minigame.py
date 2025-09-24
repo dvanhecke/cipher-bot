@@ -42,6 +42,21 @@ class MiniGame(ABC):
         self._build_embed_data
 
     @property
+    def attempts(self) -> int:
+        """Returns number of attempts"""
+        return self._attempts
+
+    @property
+    def guess_history(self) -> List[Any]:
+        """Returns list of attempts"""
+        return self._guess_history
+
+    @property
+    def max_attempts(self) -> int:
+        """Returns the max_attempts attribute"""
+        return self._max_attempts
+
+    @property
     def is_active(self) -> bool:
         """True if the game is still running, False if finished."""
         return self._active

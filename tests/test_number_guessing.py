@@ -1,4 +1,5 @@
 # tests/test_number_guessing.py
+import pytest
 from cipher.logic.number_guessing import NumberGuessing
 
 
@@ -8,7 +9,7 @@ def test_guess_correct(monkeypatch):
     # Force the number to 5
     monkeypatch.setattr(game, "_number", 5)
 
-    game.play(5)
+    game.play(game.number)
     assert game.result == "correct"
     assert game.is_active is False
     assert game.attempts == 1
@@ -65,3 +66,14 @@ def test_embed_data(monkeypatch):
     assert embed_data["Attempts"][1] is True
     assert embed_data["History"][0] == "3"
     assert embed_data["History"][1] is False
+
+
+def test_arg_parsing():
+    """Test that the argument gets parsed correctly"""
+    game = NumberGuessing()
+    with pytest.raises(ValueError):
+        game.play("test")
+    with pytest.raises(ValueError):
+        game.play(1000)
+    assert game.guess_history == []
+    assert game.attempts == 0

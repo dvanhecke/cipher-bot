@@ -8,10 +8,7 @@ Contains game state management, random number selection, and Discord embed updat
 """
 
 import random
-import os
 from cipher.utils.minigame import MiniGame
-
-MAX_NUMBER = int(os.getenv("GUESSING_GAME_MAX_NUMBER", "100"))
 
 
 class NumberGuessing(MiniGame):
@@ -28,7 +25,7 @@ class NumberGuessing(MiniGame):
     - Prepares embed-friendly data for Discord display.
     """
 
-    def __init__(self, max_attempts: int | None = None):
+    def __init__(self, max_number: int = 10, max_attempts: int | None = None):
         """
         Initialize a new numbers guessing game.
 
@@ -37,8 +34,8 @@ class NumberGuessing(MiniGame):
             max_attempts (int | None): maximum attempts to guess the target number defaults to None
         """
         super().__init__(max_attempts=max_attempts)
-        self._number = random.randint(0, MAX_NUMBER)
-        self._max_number = MAX_NUMBER
+        self._number = random.randint(0, max_number)
+        self._max_number = max_number
         self._result: str = ""
 
     @property
@@ -52,7 +49,12 @@ class NumberGuessing(MiniGame):
         return self._result
 
     def play(self, *args, **kwargs) -> None:
-        guess = args[0]
+        guess = int(args[0])
+        if not 0 <= guess <= self._max_number:
+            raise ValueError(
+                f"Please select a number between *0* and *{self._max_number}*"
+            )
+
         self._guess_history.append(guess)
         self._attempts += 1
 
@@ -73,4 +75,5 @@ class NumberGuessing(MiniGame):
         self._embed_message_data = {
             "Attempts": (str(self._attempts), True),
             "History": (", ".join(map(str, self._guess_history)), False),
+            "hint": (self._result, False),
         }

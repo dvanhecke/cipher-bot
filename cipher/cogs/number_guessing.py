@@ -46,7 +46,6 @@ class Guess(commands.Cog):
             ctx: discord.py Context
             number (int): Number to guess.
         """
-
         if not ctx.interaction:
             await ctx.message.delete()
         else:
@@ -80,7 +79,7 @@ class Guess(commands.Cog):
             await msg.edit(embed=embed)
 
         # Announce result
-        if game.result == "🎉 Correct!":
+        if game.result == "🎉 correct!":
             await ctx.send(
                 f"🎉 Correct! The number was {guess}. Game over.", delete_after=5
             )

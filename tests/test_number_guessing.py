@@ -10,7 +10,7 @@ def test_guess_correct(monkeypatch):
     monkeypatch.setattr(game, "_number", 5)
 
     game.play(game.number)
-    assert game.result == "correct"
+    assert game.result == "🎉 Correct!"
     assert game.is_active is False
     assert game.attempts == 1
     assert game.guess_history == [5]
@@ -22,7 +22,7 @@ def test_guess_too_low(monkeypatch):
     monkeypatch.setattr(game, "_number", 7)
 
     game.play(5)
-    assert game.result == "higher"
+    assert game.result == "⬆️"
     assert game.is_active is True
     assert game.attempts == 1
     assert game.guess_history == [5]
@@ -34,7 +34,7 @@ def test_guess_too_high(monkeypatch):
     monkeypatch.setattr(game, "_number", 3)
 
     game.play(5)
-    assert game.result == "lower"
+    assert game.result == "⬇️"
     assert game.is_active is True
     assert game.attempts == 1
     assert game.guess_history == [5]
@@ -65,7 +65,7 @@ def test_embed_data(monkeypatch):
     assert embed_data["Attempts"][0] == "1"
     assert embed_data["Attempts"][1] is True
     assert embed_data["History"][0] == "3"
-    assert embed_data["History"][1] is False
+    assert embed_data["History"][1] is True
 
 
 def test_arg_parsing():

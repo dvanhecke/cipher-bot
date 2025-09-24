@@ -59,11 +59,11 @@ class NumberGuessing(MiniGame):
         self._attempts += 1
 
         if guess < self._number:
-            self._result = "higher"
+            self._result = "⬆️"
         elif guess > self._number:
-            self._result = "lower"
+            self._result = "⬇️"
         else:
-            self._result = "correct"
+            self._result = "🎉 Correct!"
             self._active = False
 
         if self._max_attempts and self._attempts >= self._max_attempts:
@@ -74,6 +74,6 @@ class NumberGuessing(MiniGame):
     def _build_embed_data(self):
         self._embed_message_data = {
             "Attempts": (str(self._attempts), True),
-            "History": (", ".join(map(str, self._guess_history)), False),
-            "hint": (self._result, False),
+            "History": (", ".join(map(str, self._guess_history)), True),
+            "hint": (self._result, True),
         }

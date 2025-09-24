@@ -65,27 +65,21 @@ class Guess(commands.Cog):
 
         embed_data = game.embed_message_data
         embed = build_embed(
-            title="Number Guessing Game",
-            description="Try to guess the correct number!",
+            title="🎲 Number Guessing Game",
+            description=f"Try to guess the correct number! \
+                    Number is between *0* and *{self.max_number}*",
             color=discord.Color.blurple(),
             fields=embed_data,
         )
 
-        if ctx.interaction:  # Slash command
-            if not msg:  # first response
-                msg = await ctx.send(embed=embed)
-                self.active_games[ctx.channel.id] = (game, msg)
-            else:
-                await msg.edit(embed=embed)
-        else:  # Prefix command
-            if not msg:
-                msg = await ctx.send(embed=embed)
-                self.active_games[ctx.channel.id] = (game, msg)
-            else:
-                await msg.edit(embed=embed)
+        if not msg:  # first response
+            msg = await ctx.send(embed=embed)
+            self.active_games[ctx.channel.id] = (game, msg)
+        else:
+            await msg.edit(embed=embed)
 
         # Announce result
-        if game.result == "correct":
+        if game.result == "🎉 correct!":
             await ctx.send(
                 f"🎉 Correct! The number was {guess}. Game over.", delete_after=5
             )

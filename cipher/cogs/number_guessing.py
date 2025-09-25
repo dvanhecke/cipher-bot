@@ -68,7 +68,7 @@ class Guess(commands.Cog):
         embed = build_embed(
             title="🎲 Number Guessing Game",
             description=f"Try to guess the correct number! \
-                    Number is between *0* and *{self.max_number}*",
+Number is between *0* and *{self.max_number}*",
             color=discord.Color.blurple(),
             fields=embed_data,
         )
